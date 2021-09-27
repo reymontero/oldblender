@@ -1,0 +1,726 @@
+	/* header voor trace  		*/
+
+	/* struct EditVert   		*/
+	/* struct EditEdge   		*/
+	/* struct EditVlak   		*/
+
+	/* struct Bezier   		*/
+	/* struct Key			*/
+
+	/* struct Base   		*/
+	/* struct ColBlck   		*/
+	/* struct LaData		*/
+	/* struct ObData		*/
+	/* struct PerfSph		*/
+	/* struct VV			*/
+	/* struct VertOb		*/
+	/* struct VlakOb		*/
+	/* struct MoData		*/
+	/* struct PolyData		*/
+	/* struct Tex			*/
+
+	/* struct Wrld			*/
+
+	/* struct View			*/
+	/* struct Global		*/
+	/* struct Textudata		*/
+
+	/* struct VertRen		*/
+	/* struct VlakRen		*/
+	/* struct LampRen		*/
+	/* struct PolyRen		*/
+
+	/* struct Render		*/
+	/* struct Osa			*/
+
+	/* struct Node			*/
+	/* struct Branch		*/
+
+	/* struct Matrix3		*/
+	/* struct Matrix4		*/
+
+/* ******************* DEFINES ********************************* */
+
+#include <sys/types.h>
+#include <local/util.h>
+#include <local/objfnt.h>
+#include <local/iff.h>
+
+#define IRIS 1
+#define ELAN 2
+#define ENTRY 3
+
+#define DL_POLY		  0
+#define DL_POLY_SOLID	100
+#define DL_POLY_GOUR	200
+
+#define DL_SEGM		  1
+
+#define DL_SURF		  2
+#define DL_SURF_SOLID	102
+#define DL_SURF_GOUR	202
+
+#define DL_TRIA		  3
+#define DL_TRIA_SOLID	103
+#define DL_TRIA_GOUR	203
+
+#define FNT_PDRAW 1
+#define FNT_HAEBERLI 2
+
+#define drawmode mydrawmode
+
+#define DL_SURFINDEX(cyclu, cyclv, sizeu, sizev)	    \
+							    \
+    if( (cyclv)==0 && a==(sizev)-1) break;		    \
+    if(cyclu) {						    \
+	p1= sizeu*a;					    \
+	p2= p1+ sizeu-1;				    \
+	p3= p1+ sizeu;					    \
+	p4= p2+ sizeu;					    \
+	b= 0;						    \
+    }							    \
+    else {						    \
+	p2= sizeu*a;					    \
+	p1= p2+1;					    \
+	p4= p2+ sizeu;					    \
+	p3= p1+ sizeu;					    \
+	b= 1;						    \
+    }							    \
+    if( (cyclv) && a==sizev-1) {			    \
+	p3-= sizeu*sizev;				    \
+	p4-= sizeu*sizev;				    \
+    }
+
+#define SHLX (-.577349)
+#define SHLY (-.577349)
+#define SHLZ (0.577349)
+
+#define SHADESPHEREX 62
+#define SHADESPHEREY 62
+
+#define SHLX1 (SHLX*SHADESPHEREX)
+#define SHLY1 (SHLY*SHADESPHEREX)
+#define SHLZ1 (SHLZ*SHADESPHEREX)
+
+#define PI 3.14159265358979323846
+
+#define VECCOPY(v1,v2) 		{*(v1)= *(v2); *(v1+1)= *(v2+1); *(v1+2)= *(v2+2);}
+#define QUATCOPY(v1,v2) 	{*(v1)= *(v2); *(v1+1)= *(v2+1); *(v1+2)= *(v2+2); *(v1+3)= *(v2+3);}
+#define LEN(x,y)		{fsqrt((x)*(x)+(y)*(y))}
+#define SGN(x)			( (x)>0 ? 1: (x)<0 ? -1: 0 )
+
+#define PRINT(d, var)	printf("var:%d\n", var)
+#define PRINT2(d, e, var1, var2)	printf("var1: %d var2: %e\n", var1, var2)
+#define PRINT3(d, e, f, var1, var2, var3)	printf("var1: %d var2: %e var3: %f\n", var1, var2, var3)
+#define PRINT4(d, e, f, g, var1, var2, var3, var4)	printf("var1: %d var2: %e var3: %f var4: %g\n", var1, var2, var3, var4)
+
+#define TESTBASE(base)	(base->f & 1)!=0 && (base->lay & view0.lay)!=0
+
+	/* limits */
+#define MAXTEX		40
+	/* renderlimits */
+#define MAXPOLY 256
+#define MAXLAMP 32
+#define MAXVERT (2<<18)
+#define MAXVLAK (2<<18)
+
+/* *********************** FUNCTIES ***************************** */
+
+extern char *mallocN(long,char *);
+extern char *callocN(long,char *);
+extern short freeN(char *);
+extern float initgrabz(long x,long y,long z);
+extern short testquESC();
+extern short okee(char *);
+extern short traces_qread(short *);
+
+/* *********************** STRUCTS ***************************** */
+
+extern struct Global G;
+extern struct View view0;
+extern struct Render R;
+extern struct Wrld wrld;
+extern struct Screen S;
+extern struct UserDef User;
+
+struct Screen
+{
+	short bxs, bys, bxw, byw; 
+	short vxs, vys, vxw, vyw;
+	short x, y;
+};
+
+struct EditVert
+{
+	struct EditVert *next,*prev,*vn;
+	float co[3];
+	short xs,ys;
+	char f,h;
+	short f1;
+};
+
+struct EditEdge
+{
+	struct EditEdge *next,*prev;
+	struct EditVert *v1,*v2,*vn;
+	char f,h;
+	short f1;
+};
+
+struct EditVlak
+{
+	struct EditVlak *next,*prev;
+	struct EditVert *v1,*v2,*v3;
+	float n[3];
+	short rt;
+	char f,f1;
+};
+
+struct Bezier
+{
+	short cp;
+	char f,f1;
+};
+
+struct VectorFont {
+	struct VectorFont *next,*prev;
+	char *name;
+	unsigned char *base;
+	unsigned char *index[256];
+	short kcount,us;
+	short *kern;
+	struct objfnt * objfnt;
+	char type;
+};
+
+struct FontData
+{
+	short type;
+	char f,f1;
+	struct VectorFont *vf;
+	short len;
+	short lines;
+	char *str;
+	short set[6];
+	struct Bezier *bez;
+	short pos,rt;
+	long xof,yof;
+};
+
+struct MipMap
+{
+    struct MipMap *next;
+    struct ImBuf *ibuf;
+};
+
+struct Imap
+{
+	char type,ok;
+	short us;
+	char name[96];
+	struct MipMap *mipmap;
+	struct ImBuf *ibuf;
+};
+
+struct Key
+{
+	struct Key *next;
+	float pos;
+	short soort;
+	char f,f1;
+};
+
+struct Base
+{
+	struct Base *next;
+	short soort;
+	char f, f1;
+	short sx, sy;
+	long v[3];
+	ushort lay;
+	short sf,len;
+	short f2;
+	long *d, o[3];
+	float q[4], m[3][3];
+	long ivec[3];
+	float imat[3][3];
+	long rt1;
+	char str[14];
+	short nnr;
+	long rt2;
+	struct Base *p;
+	struct Base *w;
+	struct Base *t;
+	struct Key *pkey;
+	struct Bezier *ipopkey;
+	struct Key *key;
+	struct Bezier *ipokey;
+	long rt3;
+	long r[3], r2[3];
+	long rt4[6];
+	short holo1, holo2;
+};	
+
+struct ColBlck
+{
+	char r,g,b,mode;
+	char kref,kspec,spec,tra,mir,ang,amb;
+	char specr,specg,specb,mirr,mirg,mirb;
+	char texco;
+	short hasize,speclim;
+	char ambr,ambg,ambb;
+	char emit;
+	ushort lay;
+	char tex[4];
+	ushort map[8];
+	struct Base *base[4];
+};
+
+struct ColBlckF
+{
+	float a,r,g,b;
+	short mode, spec;
+	float kref,kspec,tra,mir, emit;
+	float specr,specg,specb,mirr,mirg,mirb;
+	float ambr,ambg,ambb;
+	float ang,amb,speclim;
+	short copysize, texco;
+	ushort lay, rt1;
+	long rt2, rt3;
+	void (*filtfunc)();
+	char tex[4];
+	ushort map[8];
+	struct Base *base[4];
+};
+
+struct LaData
+{
+	long rt1;
+	short rt,soort;
+	long ld;
+	char r,g,b,haint;
+	char spsi,spbl,f,f1;
+	char ld1,ld2;
+	short bufsize,clipsta,clipend;
+	short samp,bias;
+	float soft;
+	char tex[4];
+	short map[4];
+	struct Base *base[4];
+	long rt3,rt4;
+};
+
+struct BezTriple
+{
+    float vec[3][3];
+    short s[3][2];
+    char h1, h2;
+    char f1, f2, f3, hide;
+    short rt;
+};
+
+struct BPoint
+{
+    float vec[4];
+    short s[2], f1, hide;
+};
+
+struct Nurb {
+    struct Nurb *next, *prev;
+    short type;
+    short pntsu, pntsv, orderu, orderv, resolu, resolv;
+    char flagu, flagv;
+    struct BezTriple *bezt;
+    struct BPoint *bp;
+    float *knotsu, *knotsv;
+    struct ListBase trim;
+    short col, hide;
+    long rt2, rt3, rt4;
+};
+
+struct DispList {
+    struct DispList *next, *prev;
+    short type, flag;
+    long parts, nr;
+    short col, rt;
+};
+
+struct BevList {
+    struct BevList *next, *prev;
+    short nr, flag;
+    short poly, gat;
+};
+
+struct BevPoint {
+    float x, y, sin, cos;
+    short f1, f2;
+};
+
+struct CurveData
+{
+	struct ListBase curve;
+        struct ListBase disp;
+        struct ListBase bev;
+        struct Base *bevbase;
+	float ws;
+	short us, flag;
+	short width, ext1, ext2, presetbev;
+	float depth;
+	long rt[4];
+};
+
+struct PolyData
+{
+	short vert,poly;
+	long afm[3];
+	float ws;
+	char f,f1;
+	short us,ext,f45p,f45m,n[3];
+	short *f45;
+	float depth;
+	long rt2[6];
+};
+
+struct ObData
+{
+	struct VV *vv;
+	long fd[3][3];
+	struct PolyData *po;
+	struct FontData *fo;
+	struct CurveData *cu;
+	char c,dt;	/* aantal colbl, drawtype */
+	struct ListBase disp;
+	char e,ef;
+	short estep,elen;
+	short rt3;
+	long rt4;
+	struct Bezier *ipovvkey;
+};
+
+struct PerfSph
+{
+	long rt1;
+	long rad, radf;
+	struct VertOb *vert;
+	long rt2[4];
+	struct ColBlck c;
+};
+		
+struct VV
+{
+	long vert,vlak,afm[3];
+	short us;
+	char f,f1;
+	float ws;
+	struct Key *key;
+};
+
+struct VertOb
+{
+	short c[3],n[3];
+};
+
+struct VlakOb
+{
+	ushort v1,v2,v3;
+	short n[3];
+	char rt1,rt2,f,ec;
+};
+
+struct MoData
+{
+	struct Bezier *beztra;
+	struct Bezier *ipotra;
+	float *data,*mkey;
+	struct Bezier *ipomkey;
+	long rt1[3];
+	struct Bezier *ipoqfi;
+	short qf,ease1,ease2,n[3];
+	short qfo;
+	short rt2;
+	short fr;
+	char f,f1;
+	short rt3;
+	long rt4[5];
+};
+
+struct Tex
+{
+	char soort,type,f,cint,bint,vint;
+	char c1[3],c2[3],c3[3],li[3];
+	short div[3],add[3],var[12];
+	char str[12];
+	float cintf, vintf;
+	float c1f[3], c2f[3], c3f[3];
+	struct Imap *ima;
+	long *ima1,*ima2;
+	float lif[3], divf[3], bintf;
+};
+
+struct Wrld
+{
+	char horr,horg,horb,zenr,zeng,zenb;
+	char ambr,ambg,ambb,gror,grog,grob;
+	char misi, dofi, rt01, rt02;
+	char fs,fg;
+	short rt2;
+	long mistdist;
+	char stex[4],smap[4];
+	struct Base *sbase[4];
+	short dofsta, dofend, dofmin, dofmax;
+	long rt5[4];
+	short globsh,rt4;
+	float grvec[3],inprh,inprz;
+	long miststa;
+};
+
+struct View
+{
+	struct View *next;
+	short num, rt1;
+	long obs[3], tar[3];
+	short lens, view, persp, rt2;
+	float phi, theta, dproj;
+	short rt3, grid;	/* rt want grid was vroeger long */
+	long ofs[3], muis[3];
+	ushort lay, rt4;
+	float tilt;
+	struct Base *opar, *tpar, *cambase;
+	short mx,my;
+	short near, far;
+};
+
+struct Global
+{
+	short qual,mainb,mainbo,hie,move1,move2,layact;
+	short totobj,totlamp,totmove,totpoly;
+	long totvert,totvlak;
+	short f,actp2,actp3,actkey,keydraw,ipomode;
+	struct Base *firstbase, *basact, *lastbase,*ebase,*workbase;
+	struct Bezier *spline;
+	float persmat[4][4], persinv[4][4], winmat[4][4], viewmat[4][4];
+	short cfra,sfra,efra,frs,framap,framapto;
+	float framelen;
+	short size,filt,schaduw,trace,border;
+	short skybuf,ali,script,background,disc,holo,osa,genlock;
+	short bufscript, zbuf, moving, localview;
+	short xminb,xmaxb,yminb,ymaxb,sview,tracetype,tradep;
+	short totex,colact;
+	struct Tex **adrtex;
+	long near, far, rtt1, rtt2;
+	short obslimits;
+	char obj[80],ima[80],sce[80],skb[80],pic[80],scr[80],ftype[80];
+	char bufscr[80];
+	long winar[10],winakt,*font;
+	struct ListBase edve;
+	struct ListBase eded;
+	struct ListBase edvl;
+	long totvertsel,totvlaksel,tothalo,totvlakt,time,cputime;
+	struct ListBase vfbase;
+	short afbreek, machine;
+	float textcurs[4][2];
+};
+
+struct Textudata
+{
+	char tekst[12][10];
+	short min[12],max[12],def[12];
+	long c1,c2,c3,li;
+	char f;
+	short div[3],add[3];
+};
+
+struct VertRen
+{
+	float co[3];
+	float n[3];
+	float ho[4];
+	struct VertOb *v;
+	ulong colg;	/* voor gouroud */
+	short clip,rt;
+};
+
+struct VlakRen
+{
+	struct VertRen *v1,*v2,*v3;
+	float n[3],len;
+	struct ColBlckF *col;
+	struct VlakOb *vl;
+	char snproj,puno;
+	short rt1;
+	ulong colg;	/* voor gouroud */
+};
+
+struct HaloRen
+{	
+	float xs,ys,rad,radsq;
+	ulong zs,zd;
+	short miny,maxy;
+	char alfa,b,g,r,type,f;
+	short rt;
+	struct ColBlckF *col;
+};
+
+
+struct ShadBuf {
+	short samp,rt;
+	float persmat[4][4];
+	float winmat[4][4];
+	float jit[25][2];
+	float d,far,pixsize,soft;
+	long co[3];
+	long size,bias;
+	ulong *zbuf;
+	char *cbuf;
+};
+
+
+struct LampRen
+{
+	float xs,ys,dist;
+	long co[3];
+	short soort;
+	float r, g, b;
+	char haint,f,f1, f2;
+	ushort lay;
+	float spotsi,spotbl;
+	char tex[4];
+	short map[4];
+	struct Base *base[4];
+	float vec[3];
+	float xsp,ysp,distkw,inpr;
+	float halokw,halo;
+	float ld1,ld2;
+	struct ShadBuf *shb;
+	float imat[3][3];
+	float spottexfac;
+};
+
+struct PolyRen
+{
+	short vert,poly;
+	struct ColBlckF *col;
+	float n[3];
+	double *nurb;
+	double *data;
+};
+
+struct VertStrip
+{
+	float co[3];
+	float n[3];
+	float ho[4];
+	short clip, flag;  
+};
+
+struct FaceStrip
+{
+	float n[3];
+};
+
+struct QStrip
+{
+	struct QStrip *next, *prev;
+	short pntsu, pntsv;
+	short flagu, flagv;
+	long firstface;
+	struct ColBlckF *col;
+	struct VertStrip *verts;
+	struct FaceStrip *faces;
+};
+
+struct Render
+{
+	long co[3];
+	short lo[3],gl[3],uv[2],ref[3],orn[3];
+	short itot,i,ic,rgb,norm;
+	float vn[3],view[3],xcor,ycor,zcor,*vno;
+	struct ColBlckF col;
+	short xsch,ysch,afmx,afmy,xasp,yasp,size,d,f,f1,anim;
+	short xstart,xend,ystart,yend,xparts,yparts;
+	long svlako;
+	struct VertRen **blove;
+	struct VlakRen **blovl,*vlr;
+	struct PolyRen **poly;
+	struct LampRen **la;
+	struct HaloRen **bloha;
+	struct VlakRen **blovlt;
+	ulong *rectot,*rectz,*rectdaps,*rectaccu;
+	short xof,yof,rectx,recty;
+	short schaduwvoeler,osatex;
+	short winpos,planes,imtype, safety;
+	float pixsize, near, far;
+	short edgeint, rt1;
+	long rt2[4];
+};
+
+struct Osa
+{
+	long dxco[3],dyco[3];
+	float dxlo[3],dylo[3],dxgl[3],dygl[3],dxuv[2],dyuv[2];
+	float dxref[3],dyref[3],dxorn[3],dyorn[3];
+	float dxno[3], dyno[3], dxview, dyview;
+	float dxlv[3], dylv[3];
+};
+
+struct Branch
+{
+	struct Branch *b[8];
+};
+
+struct Node
+{
+	struct VlakRen *v[7];
+	struct Node *next;
+};
+
+struct PixStrMain
+{
+	struct PixStr *ps;
+	struct PixStrMain *next;
+};
+	
+struct PixStr
+{
+	struct PixStr *next;
+	long vlak0,vlak;
+	ulong z;
+	ulong mask;
+	short aantal, ronde;
+};
+
+struct Matrix3
+{
+	 float i[3][3];
+};
+
+struct Matrix4
+{
+	 float i[4][4]; 
+};
+
+struct UserDef
+{
+	short back[4];
+	short but0[3][4], but1[3][4], but2[3][4], but3[3][4], but4[3][4], but[3][5];
+	long rt[24];
+};
+
+struct BGpic {
+    struct ImBuf *ibuf;
+    float dproj, zoom;
+    short xim, yim, size, blend;
+    char name[100];
+};
+
+typedef struct rct {
+    int xmin, xmax;
+    int ymin, ymax;
+} rct;
+
+typedef struct rctf {
+    float xmin, xmax;
+    float ymin, ymax;
+} rctf;
+
+

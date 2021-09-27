@@ -1,0 +1,105 @@
+De standaard eenheid wordt de movie.
+van zo'n movie kun je zeggen:
+	afspeelrichting (+1 / -1)
+	eerste en laatste frame
+	lengte van de frames in de movie
+
+Als je op een bepaald frame de lengte van een frame in de movie
+veranderd, splits je als het ware de movie in 3-en (2-en):
+	- het stuk voor dat frame
+	- het frame zelf
+	- het stuk na het frame.
+
+uiteindelijk moet er een soort directory structuur onstaan: elke
+subdir is een macro
+
+- meerdere movies achter elkaar af kunnen spelen
+- interactief aan en uit kunnen zetten
+- met tab / backspace naar volgende / vorige movie kunnen springen
+- frames deleten / inserten
+- lengte van frames kunnen zetten
+- inpunt kunnen zetten
+- scripten kunnen lezen / schrijven
+
+
+mogelijke acties:
+	- play in elke richting / snelheid
+	- stop automaties op eerste en laatste plaatje
+	- spring naar plaatje absoluut en sta stil
+	- spring naar plaatje relatief en sta stil
+
+Er zijn diverse bronnen voor input:
+
+- xwindows
+- videolibrary
+- movielibrary
+
+met vlRegisterHandler kan voor een fd's een handler aangewezen worden
+met vlCallCallbacks of vlMainLoop kan daarna alle events afgehandeld worden
+
+
+opname:
+
+1 - zorg ervoor dat de buffer niet al te gevuld is (ook niet te leeg)
+2 - bereken het verband tussen tijdcode op band en afgespeelde frames
+3 - kijk vanaf welk frame de animatie moet starten
+4 - start afspelen zodra dat frame in de buffer zit
+
+Dit kan nog nauwkeuriger: De video op de iris kan een continue stroom
+van tijdcodes sturen totdat er een nieuw commando komt.
+
+
+Voor gedefinieerde beelden:
+
+	default (== black)
+	black
+	colorbars
+
+Opbouw van de file?
+
+- verschil tussen macro's en filenamen is dat een filenaam met een "/" begint.
+- daarna kun je aangeven van welk frame tot welk frame gebruikt worden
+- effecten worden gedefinieerd en blijven geldig totdat er een nieuwe gedefinieerd wordt.
+  standaard is dat de desolve
+
+	EDL1
+	
+	"hulptape" {
+		filenaam / "hulptape" [[#]-[#]] [speed [+-]#.#] [duration #.#] [offset #]
+		...
+	}
+
+
+struct edit{
+	struct edit *next, *prev;
+	void * what;				/* wijst naar movie, of naar hulptape */
+	int what_is_what;			/* bepaald of pointer naar hulptape of shot verwijst */
+	int first,last,offset;
+	float speed;
+}
+
+struct hulptape {
+	char * name;
+	long framecount;
+	struct edit * first;
+}
+
+struct shot {
+	char * name;
+	long framecount;
+	MVid movie;
+	MVid video;
+	MVid audio;
+	long audiocount;
+}
+
+
+
+Wat is de truck om te gaan rekenen met offest, first, last, speed ??
+
+1 - we rekenen van null -> aantal frames - 1
+2 - de lengte van een shot is dus (last - first) + 1 frame
+	als first en laast gelijk zijn, dan hebben we dus nog altijd 1 frame.
+3 - als speed gezet is, dan geld:
+	duration = ((last - first) + 1) / speed
+4 - moeten framecount, fist, last, offset geen doubles worden ?

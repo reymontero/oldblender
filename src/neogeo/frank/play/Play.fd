@@ -1,0 +1,826 @@
+Magic: 13000
+
+Internal Form Definition File
+    (do not change)
+
+Number of forms: 1
+Unit of measure: FL_COORD_PIXEL
+
+=============== FORM ===============
+Name: Play
+Width: 1010
+Height: 720
+Number of Objects: 45
+
+--------------------
+class: FL_BOX
+type: UP_BOX
+box: 0 0 1010 720
+boxtype: FL_UP_BOX
+colors: FL_COL1 FL_COL1
+alignment: FL_ALIGN_CENTER
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: 
+shortcut: 
+resize: FL_RESIZE_ALL
+gravity: FL_NoGravity FL_NoGravity
+name: 
+callback: 
+argument: 
+
+--------------------
+class: FL_CANVAS
+type: NORMAL_CANVAS
+box: 30 20 720 575
+boxtype: FL_DOWN_BOX
+colors: FL_COL1 FL_COL1
+alignment: FL_ALIGN_CENTER
+style: FL_NORMAL_STYLE
+size: FL_NORMAL_SIZE
+lcol: FL_BLACK
+label: 
+shortcut: 
+resize: FL_RESIZE_X
+gravity: FL_NorthWest FL_SouthEast
+name: video_canvas
+callback: canvas_callback
+argument: 0
+
+--------------------
+class: FL_BUTTON
+type: TOUCH_BUTTON
+box: 350 640 30 30
+boxtype: FL_UP_BOX
+colors: FL_COL1 FL_COL1
+alignment: FL_ALIGN_CENTER
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: |<
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthWest FL_NoGravity
+name: MGoto_in
+callback: movie_pos
+argument: 1
+
+--------------------
+class: FL_BUTTON
+type: TOUCH_BUTTON
+box: 430 640 30 30
+boxtype: FL_UP_BOX
+colors: FL_COL1 FL_COL1
+alignment: FL_ALIGN_CENTER
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: >|
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthWest FL_NoGravity
+name: MGoto_out
+callback: movie_pos
+argument: 3
+
+--------------------
+class: FL_BUTTON
+type: TOUCH_BUTTON
+box: 390 640 30 30
+boxtype: FL_UP_BOX
+colors: FL_COL1 FL_COL1
+alignment: FL_ALIGN_CENTER
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: |<>|
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthWest FL_NoGravity
+name: MLoop
+callback: movie_pos
+argument: 2
+
+--------------------
+class: FL_SLIDER
+type: HOR_FILL_SLIDER
+box: 30 610 720 25
+boxtype: FL_DOWN_BOX
+colors: FL_COL1 FL_SLATEBLUE
+alignment: FL_ALIGN_BOTTOM_RIGHT
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: 
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_NorthWest FL_SouthEast
+name: MPos
+callback: movie_pos
+argument: 0
+
+--------------------
+class: FL_INPUT
+type: FLOAT_INPUT
+box: 270 640 55 30
+boxtype: FL_DOWN_BOX
+colors: FL_COL1 FL_MCOL
+alignment: FL_ALIGN_LEFT
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: Speed
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthWest FL_NoGravity
+name: MSpeed_input
+callback: movie_speed
+argument: 4
+
+--------------------
+class: FL_INPUT
+type: FLOAT_INPUT
+box: 270 680 55 30
+boxtype: FL_DOWN_BOX
+colors: FL_COL1 FL_MCOL
+alignment: FL_ALIGN_LEFT
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: Frame
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthWest FL_NoGravity
+name: MFrame
+callback: movie_pos
+argument: 4
+
+--------------------
+class: FL_BEGIN_GROUP
+type: 0
+box: 0 0 0 0
+boxtype: FL_NO_BOX
+colors: FL_COL1 FL_MCOL
+alignment: FL_ALIGN_CENTER
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: 
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthEast FL_SouthEast
+name: movie_speed
+callback: 
+argument: 
+
+--------------------
+class: FL_SLIDER
+type: HOR_SLIDER
+box: 30 680 190 30
+boxtype: FL_DOWN_BOX
+colors: FL_COL1 FL_COL1
+alignment: FL_ALIGN_BOTTOM
+style: FL_NORMAL_STYLE
+size: FL_TINY_SIZE
+lcol: FL_BLACK
+label: 
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthWest FL_NoGravity
+name: MSpeed_slider
+callback: movie_speed
+argument: 3
+
+--------------------
+class: FL_BUTTON
+type: RADIO_BUTTON
+box: 30 640 30 30
+boxtype: FL_UP_BOX
+colors: FL_COL1 FL_COL1
+alignment: FL_ALIGN_CENTER
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: <<
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthWest FL_NoGravity
+name: MFReverse
+callback: movie_speed
+argument: -2
+
+--------------------
+class: FL_BUTTON
+type: RADIO_BUTTON
+box: 150 640 30 30
+boxtype: FL_UP_BOX
+colors: FL_COL1 FL_COL1
+alignment: FL_ALIGN_CENTER
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: >
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthWest FL_NoGravity
+name: MForward
+callback: movie_speed
+argument: 1
+
+--------------------
+class: FL_BUTTON
+type: RADIO_BUTTON
+box: 190 640 30 30
+boxtype: FL_UP_BOX
+colors: FL_COL1 FL_COL1
+alignment: FL_ALIGN_CENTER
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: >>
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthWest FL_NoGravity
+name: MFForward
+callback: movie_speed
+argument: 2
+
+--------------------
+class: FL_BUTTON
+type: RADIO_BUTTON
+box: 70 640 30 30
+boxtype: FL_UP_BOX
+colors: FL_COL1 FL_COL1
+alignment: FL_ALIGN_CENTER
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: <
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthWest FL_NoGravity
+name: MReverse
+callback: movie_speed
+argument: -1
+
+--------------------
+class: FL_BUTTON
+type: RADIO_BUTTON
+box: 110 640 30 30
+boxtype: FL_UP_BOX
+colors: FL_COL1 FL_COL1
+alignment: FL_ALIGN_CENTER
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: ||
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthWest FL_NoGravity
+name: MStop
+callback: movie_speed
+argument: 0
+
+--------------------
+class: FL_END_GROUP
+type: 0
+box: 0 0 0 0
+boxtype: FL_NO_BOX
+colors: FL_COL1 FL_MCOL
+alignment: FL_ALIGN_CENTER
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: 
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_NoGravity FL_NoGravity
+name: 
+callback: 
+argument: 
+
+--------------------
+class: FL_BEGIN_GROUP
+type: 0
+box: 0 0 0 0
+boxtype: FL_NO_BOX
+colors: FL_COL1 FL_MCOL
+alignment: FL_ALIGN_CENTER
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: 
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_NoGravity FL_NoGravity
+name: video_speed
+callback: 
+argument: 
+
+--------------------
+class: FL_SLIDER
+type: HOR_SLIDER
+box: 540 560 190 20
+boxtype: FL_DOWN_BOX
+colors: FL_COL1 FL_COL1
+alignment: FL_ALIGN_BOTTOM
+style: FL_NORMAL_STYLE
+size: FL_TINY_SIZE
+lcol: FL_BLACK
+label: 
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthEast FL_NoGravity
+name: VSpeed_slider
+callback: video_speed
+argument: 999
+
+--------------------
+class: FL_BUTTON
+type: RADIO_BUTTON
+box: 540 520 30 30
+boxtype: FL_UP_BOX
+colors: FL_COL1 FL_COL1
+alignment: FL_ALIGN_CENTER
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: <<
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthEast FL_NoGravity
+name: VFReverse
+callback: video_speed
+argument: -5
+
+--------------------
+class: FL_BUTTON
+type: RADIO_BUTTON
+box: 660 520 30 30
+boxtype: FL_UP_BOX
+colors: FL_COL1 FL_COL1
+alignment: FL_ALIGN_CENTER
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: >
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthEast FL_NoGravity
+name: VForward
+callback: video_speed
+argument: 1
+
+--------------------
+class: FL_BUTTON
+type: RADIO_BUTTON
+box: 700 520 30 30
+boxtype: FL_UP_BOX
+colors: FL_COL1 FL_COL1
+alignment: FL_ALIGN_CENTER
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: >>
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthEast FL_NoGravity
+name: VFForward
+callback: video_speed
+argument: 5
+
+--------------------
+class: FL_BUTTON
+type: RADIO_BUTTON
+box: 580 520 30 30
+boxtype: FL_UP_BOX
+colors: FL_COL1 FL_COL1
+alignment: FL_ALIGN_CENTER
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: <
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthEast FL_NoGravity
+name: VReverse
+callback: video_speed
+argument: -1
+
+--------------------
+class: FL_BUTTON
+type: RADIO_BUTTON
+box: 620 520 30 30
+boxtype: FL_UP_BOX
+colors: FL_COL1 FL_COL1
+alignment: FL_ALIGN_CENTER
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: ||
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthEast FL_NoGravity
+name: VStop
+callback: video_speed
+argument: 0
+
+--------------------
+class: FL_END_GROUP
+type: 0
+box: 0 0 0 0
+boxtype: FL_NO_BOX
+colors: FL_COL1 FL_MCOL
+alignment: FL_ALIGN_CENTER
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: 
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_NoGravity FL_NoGravity
+name: 
+callback: 
+argument: 
+
+--------------------
+class: FL_INPUT
+type: NORMAL_INPUT
+box: 540 390 90 30
+boxtype: FL_DOWN_BOX
+colors: FL_COL1 FL_MCOL
+alignment: FL_ALIGN_TOP
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: TimeCode
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthWest FL_NoGravity
+name: TimeCode
+callback: timecode
+argument: 0
+
+--------------------
+class: FL_INPUT
+type: NORMAL_INPUT
+box: 540 480 90 30
+boxtype: FL_DOWN_BOX
+colors: FL_COL1 FL_MCOL
+alignment: FL_ALIGN_TOP_LEFT
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: In
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthEast FL_NoGravity
+name: VSet_In
+callback: set_in_out
+argument: 'i'
+
+--------------------
+class: FL_INPUT
+type: NORMAL_INPUT
+box: 640 480 90 30
+boxtype: FL_DOWN_BOX
+colors: FL_COL1 FL_MCOL
+alignment: FL_ALIGN_TOP_RIGHT
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: Out
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthEast FL_NoGravity
+name: VSet_Out
+callback: set_in_out
+argument: 'o'
+
+--------------------
+class: FL_BUTTON
+type: NORMAL_BUTTON
+box: 540 430 30 30
+boxtype: FL_UP_BOX
+colors: FL_COL1 FL_COL1
+alignment: FL_ALIGN_CENTER
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: |<
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthEast FL_NoGravity
+name: VGoto_in
+callback: video_pos
+argument: 0
+
+--------------------
+class: FL_BUTTON
+type: NORMAL_BUTTON
+box: 700 430 30 30
+boxtype: FL_UP_BOX
+colors: FL_COL1 FL_COL1
+alignment: FL_ALIGN_CENTER
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: >|
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthEast FL_NoGravity
+name: VGoto_out
+callback: video_pos
+argument: 0
+
+--------------------
+class: FL_BUTTON
+type: NORMAL_BUTTON
+box: 590 430 90 30
+boxtype: FL_UP_BOX
+colors: FL_COL1 FL_RED
+alignment: FL_ALIGN_CENTER
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: Initialise
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthEast FL_NoGravity
+name: 
+callback: video_init
+argument: 1
+
+--------------------
+class: FL_BROWSER
+type: HOLD_BROWSER
+box: 780 20 210 290
+boxtype: FL_DOWN_BOX
+colors: FL_COL1 FL_YELLOW
+alignment: FL_ALIGN_TOP_LEFT
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: 
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_NorthEast FL_NoGravity
+name: MShots
+callback: 
+argument: 
+
+--------------------
+class: FL_BEGIN_GROUP
+type: 0
+box: 0 0 0 0
+boxtype: FL_NO_BOX
+colors: FL_COL1 FL_MCOL
+alignment: FL_ALIGN_CENTER
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: 
+shortcut: 
+resize: FL_RESIZE_ALL
+gravity: FL_NoGravity FL_NoGravity
+name: controls
+callback: 
+argument: 
+
+--------------------
+class: FL_CHECKBUTTON
+type: RADIO_BUTTON
+box: 730 680 25 25
+boxtype: FL_NO_BOX
+colors: FL_COL1 FL_YELLOW
+alignment: FL_ALIGN_LEFT
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: Video
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthEast FL_NoGravity
+name: Video_Controls
+callback: add_controls
+argument: 'v'
+
+--------------------
+class: FL_CHECKBUTTON
+type: RADIO_BUTTON
+box: 730 660 25 25
+boxtype: FL_NO_BOX
+colors: FL_COL1 FL_YELLOW
+alignment: FL_ALIGN_LEFT
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: Edit
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthEast FL_NoGravity
+name: Edit_Controls
+callback: add_controls
+argument: 'e'
+
+--------------------
+class: FL_CHECKBUTTON
+type: RADIO_BUTTON
+box: 730 640 25 25
+boxtype: FL_NO_BOX
+colors: FL_COL1 FL_YELLOW
+alignment: FL_ALIGN_LEFT
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: None
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthEast FL_NoGravity
+name: No_Controls
+callback: add_controls
+argument: 'n'
+
+--------------------
+class: FL_END_GROUP
+type: 0
+box: 0 0 0 0
+boxtype: FL_NO_BOX
+colors: FL_COL1 FL_MCOL
+alignment: FL_ALIGN_CENTER
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: 
+shortcut: 
+resize: FL_RESIZE_ALL
+gravity: FL_NoGravity FL_NoGravity
+name: 
+callback: 
+argument: 
+
+--------------------
+class: FL_TEXT
+type: NORMAL_TEXT
+box: 880 320 110 20
+boxtype: FL_FLAT_BOX
+colors: FL_COL1 FL_MCOL
+alignment: FL_ALIGN_RIGHT|FL_ALIGN_INSIDE
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: 1
+shortcut: 
+resize: FL_RESIZE_ALL
+gravity: FL_NoGravity FL_NoGravity
+name: Image_frame
+callback: 
+argument: 
+
+--------------------
+class: FL_TEXT
+type: NORMAL_TEXT
+box: 880 370 110 20
+boxtype: FL_FLAT_BOX
+colors: FL_COL1 FL_MCOL
+alignment: FL_ALIGN_RIGHT|FL_ALIGN_INSIDE
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: 1
+shortcut: 
+resize: FL_RESIZE_ALL
+gravity: FL_NoGravity FL_NoGravity
+name: Sound_frame
+callback: 
+argument: 
+
+--------------------
+class: FL_INPUT
+type: NORMAL_INPUT
+box: 780 390 210 30
+boxtype: FL_DOWN_BOX
+colors: FL_COL1 FL_MCOL
+alignment: FL_ALIGN_TOP_LEFT
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: Sound Movie
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_NorthEast FL_NoGravity
+name: Sound_movie
+callback: nop
+argument: 0
+
+--------------------
+class: FL_INPUT
+type: NORMAL_INPUT
+box: 780 340 210 30
+boxtype: FL_DOWN_BOX
+colors: FL_COL1 FL_MCOL
+alignment: FL_ALIGN_TOP_LEFT
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: Image Movie
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_NorthEast FL_NoGravity
+name: Image_movie
+callback: nop
+argument: 0
+
+--------------------
+class: FL_CHECKBUTTON
+type: PUSH_BUTTON
+box: 775 680 25 25
+boxtype: FL_NO_BOX
+colors: FL_COL1 FL_YELLOW
+alignment: FL_ALIGN_CENTER
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: Auto Reload
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthEast FL_NoGravity
+name: Auto_reload
+callback: 
+argument: 
+
+--------------------
+class: FL_INPUT
+type: INT_INPUT
+box: 780 650 45 30
+boxtype: FL_DOWN_BOX
+colors: FL_COL1 FL_MCOL
+alignment: FL_ALIGN_TOP_LEFT
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: Size
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthEast FL_NoGravity
+name: Buffer_Size
+callback: buffer_size
+argument: 0
+
+--------------------
+class: FL_SLIDER
+type: HOR_FILL_SLIDER
+box: 830 650 160 30
+boxtype: FL_DOWN_BOX
+colors: FL_COL1 FL_SLATEBLUE
+alignment: FL_ALIGN_TOP_LEFT
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: Buffer
+shortcut: 
+resize: FL_RESIZE_NONE
+gravity: FL_SouthEast FL_NoGravity
+name: Buffer
+callback: nop
+argument: 0
+
+--------------------
+class: FL_BUTTON
+type: NORMAL_BUTTON
+box: 940 440 50 30
+boxtype: FL_UP_BOX
+colors: FL_COL1 FL_COL1
+alignment: FL_ALIGN_CENTER
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: Render
+shortcut: Rr&12
+resize: FL_RESIZE_ALL
+gravity: FL_NoGravity FL_NoGravity
+name: Render
+callback: render
+argument: 0
+
+--------------------
+class: FL_BUTTON
+type: NORMAL_BUTTON
+box: 940 480 50 30
+boxtype: FL_UP_BOX
+colors: FL_COL1 FL_COL1
+alignment: FL_ALIGN_CENTER
+style: FL_NORMAL_STYLE
+size: FL_DEFAULT_SIZE
+lcol: FL_BLACK
+label: Stop
+shortcut: Ss^C
+resize: FL_RESIZE_ALL
+gravity: FL_NoGravity FL_NoGravity
+name: StopRender
+callback: stop_render
+argument: 0
+
+==============================
+create_the_forms
